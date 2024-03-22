@@ -1,8 +1,7 @@
 import { Pressable, StyleSheet, Text, View, ScrollView } from "react-native";
-import Header from "./global/header";
-import IdeaComponent from "./mainpage/ideaCompondend";
+import IdeaComponent from "./ideaCompondend";
 
-export default function MainPage() {
+export default function MainPage({ navigation }) {
     const mockIdeaRepository = [
         {
             id: 1,
@@ -44,18 +43,21 @@ export default function MainPage() {
         },
     ];
 
+    const openIdeaKreator = () => {
+        navigation.navigate("IdeaKreator");
+    };
+
     return (
         <View style={styles.container}>
-            <Header />
             <ScrollView>
-                {mockIdeas.map((idea) => {
+                {mockIdeas.map((idea, index) => {
                     if (idea.repositoryId === 0) {
-                        return <IdeaComponent idea={idea} />;
+                        return <IdeaComponent idea={idea} key={index} />;
                     }
                 })}
             </ScrollView>
-            <Pressable style={styles.button} onPress={() => alert("Not implemented yet")}>
-                <Text>New Idea</Text>
+            <Pressable style={styles.button} onPress={() => openIdeaKreator()}>
+                <Text style={styles.buttonText}>New Idea</Text>
             </Pressable>
         </View>
     );
@@ -68,14 +70,20 @@ const styles = StyleSheet.create({
         width: "100%",
     },
 
+    scrollContainer: {
+        width: "100%",
+    },
+
     button: {
         backgroundColor: "blue",
         margin: 10,
         padding: 20,
         borderRadius: 5,
+        alignItems: "center",
     },
 
-    scrollContainer: {
-        width: "100%",
+    buttonText: {
+        color: "#fff",
+        fontWeight: "bold",
     },
 });
