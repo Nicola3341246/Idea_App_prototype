@@ -4,7 +4,9 @@ export default function Header() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Idea Prototype</Text>
-            <Pressable>Home</Pressable>
+            <Pressable onPress={() => alert("Not implemented yet")}>
+                <Text>Home</Text>
+            </Pressable>
         </View>
     );
 }
