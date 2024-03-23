@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainPage from "./components/mainpage/mainpage";
 import IdeaCreator from "./components/ideaCreator/ideaCreator";
 import IdeaViewer from "./components/ideaViewer/ideaViewer";
+import RepoViewer from "./components/repoViewer/repoViewer";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ export default function App() {
                         ),
                     })}
                 />
+                <Stack.Screen name="RepoViewer" component={RepoViewer} />
                 <Stack.Screen
                     name="IdeaViewer"
                     component={IdeaViewer}

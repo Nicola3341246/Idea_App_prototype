@@ -1,0 +1,5 @@
+============================================
+filename: folder_icon.png
+source: https://iconscout.com/free-icon/folder-1767952
+license: Creative-Commons-Lizenzen
+============================================
