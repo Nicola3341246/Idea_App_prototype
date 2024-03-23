@@ -1,17 +1,18 @@
 import { Pressable, StyleSheet, Text, View, ScrollView } from "react-native";
-import IdeaComponent from "./ideaCompondend";
+import IdeaComponent from "../global/ideaCompondent.js";
+import RepoComponent from "../global/repoComponent.js";
 
 export default function MainPage({ navigation }) {
     const mockIdeaRepository = [
         {
             id: 1,
             parentRepositoryId: 0,
-            title: "repository 1",
+            name: "Repository 1",
         },
         {
             id: 2,
             parentRepositoryId: 0,
-            title: "repository 2",
+            name: "Repository 2",
         },
     ];
 
@@ -55,6 +56,11 @@ export default function MainPage({ navigation }) {
     return (
         <View style={styles.container}>
             <ScrollView>
+                {mockIdeaRepository.map((repo, index) => {
+                    if (repo.parentRepositoryId === 0) {
+                        return <RepoComponent navigation={navigation} repo={repo} key={index} />;
+                    }
+                })}
                 {mockIdeas.map((idea, index) => {
                     if (idea.repositoryId === 0) {
                         return <IdeaComponent navigation={navigation} idea={idea} key={index} />;
