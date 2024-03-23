@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainPage from "./components/mainpage/mainpage";
 import IdeaCreator from "./components/ideaCreator/ideaCreator";
+import IdeaViewer from "./components/ideaViewer/ideaViewer";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,13 @@ export default function App() {
                                 <Text style={styles.headerButtons}>Home</Text>
                             </Pressable>
                         ),
+                    })}
+                />
+                <Stack.Screen
+                    name="IdeaViewer"
+                    component={IdeaViewer}
+                    options={() => ({
+                        title: "Idea",
                     })}
                 />
             </Stack.Navigator>

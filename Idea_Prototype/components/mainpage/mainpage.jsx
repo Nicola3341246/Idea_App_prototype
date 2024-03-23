@@ -41,6 +41,11 @@ export default function MainPage({ navigation }) {
             repositoryId: 0,
             title: "Idea 5",
         },
+        {
+            id: 6,
+            repositoryId: 0,
+            title: "Idea 6",
+        },
     ];
 
     const openIdeaKreator = () => {
@@ -52,7 +57,7 @@ export default function MainPage({ navigation }) {
             <ScrollView>
                 {mockIdeas.map((idea, index) => {
                     if (idea.repositoryId === 0) {
-                        return <IdeaComponent idea={idea} key={index} />;
+                        return <IdeaComponent navigation={navigation} idea={idea} key={index} />;
                     }
                 })}
             </ScrollView>

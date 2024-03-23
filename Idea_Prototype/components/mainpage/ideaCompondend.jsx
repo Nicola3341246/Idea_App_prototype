@@ -1,10 +1,14 @@
 import { StyleSheet, View, Pressable, Text } from "react-native";
 
-export default function IdeaComponent(idea) {
+export default function IdeaComponent({ navigation, idea }) {
+    const openIdeaViewer = () => {
+        navigation.navigate("IdeaViewer", { idea: idea });
+    };
+
     return (
         <View styles={styles.container}>
-            <Pressable onPress={() => alert("Not implemented yet")}>
-                <Text style={styles.title}>{idea.idea.title}</Text>
+            <Pressable onPress={() => openIdeaViewer()}>
+                <Text style={styles.title}>{idea.title}</Text>
             </Pressable>
         </View>
     );
@@ -25,7 +29,6 @@ const styles = StyleSheet.create({
         marginRight: 5,
         padding: 20,
         borderColor: "#000000",
-        borderTopWidth: 1,
         borderBottomWidth: 1,
     },
 });
