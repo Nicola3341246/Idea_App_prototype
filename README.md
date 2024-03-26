@@ -10,4 +10,4 @@ After downloading the files onto your pc, you can open a terminal and go to the
 `.\Idea_Prototype` directory. Now you should run this command `npm install` in order to install all dependencies. To run the program run `npx expo start`. Now open Expo Go on your phone and scan the qr-code from the
 terminal.
 
-If it doesn’t connect properly use ``npx expo start --tunnel` to run the program
+If it doesn’t connect properly use ```npx expo start --tunnel``` to run the program
