@@ -102,6 +102,7 @@ export const addRepository = async (name: string, parentRepositoryId: number) =>
         parentRepositoryId: parentRepositoryId,
         name: name,
     };
+
     repositories.push(newRepository);
     await AsyncStorage.setItem("repositories", JSON.stringify(repositories));
 };
@@ -138,6 +139,11 @@ export const addIdea = async (title: string, description: string, repositoryId: 
         repositoryId: repositoryId,
         description: description,
     };
+
+    ideas.push(newIdea);
+    await AsyncStorage.setItem("ideas", JSON.stringify(ideas));
+
+    return getIdeas();
 };
 
 export const deleteIdea = async (ideaId: number) => {
@@ -145,3 +151,13 @@ export const deleteIdea = async (ideaId: number) => {
     const newIdeas = ideas.filter((idea) => idea.id !== ideaId);
     await AsyncStorage.setItem("ideas", JSON.stringify(newIdeas));
 };
+
+export const clearData = async () =>{
+    try {
+        await AsyncStorage.clear()
+    } catch(e) {
+        // clear error
+    }
+    
+    await initializeStorage();
+}
