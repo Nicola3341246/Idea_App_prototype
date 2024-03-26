@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, Pressable, StyleSheet } from "react-native";
 
-export default function IdeaViewer({ route, navigation }){
-    const {idea} = route.params;
+export default function IdeaViewer({ route, navigation }) {
+    const { idea } = route.params;
     navigation.setOptions({
         title: idea.title,
     });
@@ -10,15 +10,19 @@ export default function IdeaViewer({ route, navigation }){
         <View style={styles.container}>
             <ScrollView>
                 {(() => {
-                    if (idea.description === undefined || idea.description === null || idea.description === "") {
+                    if (
+                        idea.description === undefined ||
+                        idea.description === null ||
+                        idea.description === ""
+                    ) {
                         return (
-                            <Text style={styles.descriptionDisclaimer}>This idea doesn't have a description</Text>
+                            <Text style={styles.descriptionDisclaimer}>
+                                This idea doesn't have a description!
+                            </Text>
                         );
                     }
 
-                    return (
-                        <Text style={styles.descriptionText}>{idea.description}</Text>
-                    );
+                    return <Text style={styles.descriptionText}>{idea.description}</Text>;
                 })()}
             </ScrollView>
             <Pressable style={styles.button} onPress={() => alert("Not implemented yet!")}>
@@ -42,7 +46,7 @@ const styles = new StyleSheet.create({
         fontSize: 18,
     },
 
-    descriptionDisclaimer:{
+    descriptionDisclaimer: {
         display: "flex",
         flex: 1,
         alignSelf: "center",
