@@ -2,13 +2,20 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { addIdea } from "../../assets/store/storage";
 
-export default function IdeaCreator({ navigation }) {
+export default function IdeaCreator({ route, navigation }) {
     const [ideaTitle, setIdeaTitle] = useState("");
     const [ideaDescription, setIdeaDescription] = useState("");
 
+    const { repoId } = route.params;
+
     const createIdea = () => {
-        const stuff = addIdea(ideaTitle, ideaDescription, 0).then((result) => console.log(result));
-        //navigation.navigate("Home");
+        if (ideaTitle === "") {
+            alert("Please enter a Title");
+            return;
+        }
+
+        addIdea(ideaTitle, ideaDescription, repoId);
+        navigation.goBack();
     };
 
     return (

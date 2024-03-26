@@ -5,17 +5,15 @@ import { getRepositories, getIdeas, clearData } from "../../assets/store/storage
 import { useState, useEffect } from "react";
 
 export default function MainPage({ navigation }) {
-    const [ideaRepository, setIdeaRepository] = useState({ isLoaded: false, data: [] });
-    const [ideas, setIdeas] = useState({ isLoaded: false, data: [] });
+    const [ideaRepository, setIdeaRepository] = useState([]);
+    const [ideas, setIdeas] = useState([]);
 
     const loadData = async () => {
         const repositories = await getRepositories();
-        console.log(repositories);
-        setIdeaRepository({ isLoaded: true, data: repositories });
+        setIdeaRepository(repositories);
 
         const loadedIdeas = await getIdeas();
-        console.log(loadedIdeas);
-        setIdeas({ isLoaded: true, data: loadedIdeas });
+        setIdeas(loadedIdeas);
     };
 
     useEffect(() => {
@@ -27,7 +25,7 @@ export default function MainPage({ navigation }) {
     }, [navigation]);
 
     const openIdeaKreator = () => {
-        navigation.navigate("IdeaKreator");
+        navigation.navigate("IdeaKreator", { repoId: 0 });
     };
 
     const handleClearData = async () => {
@@ -38,12 +36,12 @@ export default function MainPage({ navigation }) {
     return (
         <View style={styles.container}>
             <ScrollView>
-                {ideaRepository.data.map((repo, index) => {
+                {ideaRepository.map((repo, index) => {
                     if (repo.parentRepositoryId === 0) {
                         return <RepoComponent navigation={navigation} repo={repo} key={index} />;
                     }
                 })}
-                {ideas.data.map((idea, index) => {
+                {ideas.map((idea, index) => {
                     if (idea.repositoryId === 0) {
                         return <IdeaComponent navigation={navigation} idea={idea} key={index} />;
                     }
