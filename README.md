@@ -1,4 +1,4 @@
-# Idea_App_prototype
+# 💡Idea_App_prototype
 
 This is a prototype for an app that helps you manage your ideas.
 
