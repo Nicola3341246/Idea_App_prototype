@@ -1,67 +1,47 @@
 import { Pressable, StyleSheet, Text, View, ScrollView } from "react-native";
 import IdeaComponent from "../global/ideaCompondent.js";
 import RepoComponent from "../global/repoComponent.js";
+import { getRepositories, getIdeas, clearData } from "../../assets/store/storage.ts";
+import { useState, useEffect } from "react";
 
 export default function MainPage({ navigation }) {
-    const mockIdeaRepository = [
-        {
-            id: 1,
-            parentRepositoryId: 0,
-            name: "Repository 1",
-        },
-        {
-            id: 2,
-            parentRepositoryId: 0,
-            name: "Repository 2",
-        },
-    ];
+    const [ideaRepository, setIdeaRepository] = useState([]);
+    const [ideas, setIdeas] = useState([]);
 
-    const mockIdeas = [
-        {
-            id: 1,
-            repositoryId: 1,
-            title: "Idea 1",
-        },
-        {
-            id: 2,
-            repositoryId: 1,
-            title: "Idea 2",
-        },
-        {
-            id: 3,
-            repositoryId: 2,
-            title: "Idea 3",
-        },
-        {
-            id: 4,
-            repositoryId: 2,
-            title: "Idea 4",
-        },
-        {
-            id: 5,
-            repositoryId: 0,
-            title: "Idea 5",
-        },
-        {
-            id: 6,
-            repositoryId: 0,
-            title: "Idea 6",
-        },
-    ];
+    const loadData = async () => {
+        const repositories = await getRepositories();
+        setIdeaRepository(repositories);
+
+        const loadedIdeas = await getIdeas();
+        setIdeas(loadedIdeas);
+    };
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener("focus", () => {
+            loadData();
+        });
+
+        return unsubscribe;
+    }, [navigation]);
 
     const openIdeaKreator = () => {
-        navigation.navigate("IdeaKreator");
+        navigation.navigate("IdeaKreator", { repoId: 0 });
+    };
+
+    const handleClearData = async () => {
+        await clearData();
+        loadData();
     };
 
     return (
         <View style={styles.container}>
             <ScrollView>
-                {mockIdeaRepository.map((repo, index) => {
+                {ideaRepository.map((repo, index) => {
                     if (repo.parentRepositoryId === 0) {
                         return <RepoComponent navigation={navigation} repo={repo} key={index} />;
                     }
                 })}
-                {mockIdeas.map((idea, index) => {
+                {ideas.map((idea, index) => {
                     if (idea.repositoryId === 0) {
                         return <IdeaComponent navigation={navigation} idea={idea} key={index} />;
                     }
@@ -70,6 +50,20 @@ export default function MainPage({ navigation }) {
             <Pressable style={styles.button} onPress={() => openIdeaKreator()}>
                 <Text style={styles.buttonText}>New Idea</Text>
             </Pressable>
+            {/* This code should be removed for release */}
+            <Pressable
+                style={[styles.button, { backgroundColor: "red" }]}
+                onPress={() => handleClearData()}
+            >
+                <Text style={styles.buttonText}>Clear Data</Text>
+            </Pressable>
+            <Pressable
+                style={[styles.button, { backgroundColor: "red" }]}
+                onPress={() => loadData()}
+            >
+                <Text style={styles.buttonText}>Reload</Text>
+            </Pressable>
+            {/* Unit here */}
         </View>
     );
 }

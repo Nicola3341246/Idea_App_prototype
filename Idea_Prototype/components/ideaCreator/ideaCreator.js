@@ -1,21 +1,38 @@
+import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { addIdea } from "../../assets/store/storage";
 
-export default function IdeaCreator({ navigation }) {
+export default function IdeaCreator({ route, navigation }) {
+    const [ideaTitle, setIdeaTitle] = useState("");
+    const [ideaDescription, setIdeaDescription] = useState("");
+
+    const { repoId } = route.params;
+
     const createIdea = () => {
-        // Add idea to storage
-        navigation.navigate("Home");
+        if (ideaTitle === "") {
+            alert("Please enter a Title");
+            return;
+        }
+
+        addIdea(ideaTitle, ideaDescription, repoId);
+        navigation.goBack();
     };
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 <Text style={styles.label}>Title</Text>
-                <TextInput style={styles.input} placeholder="Title" />
-                <Text style={styles.label}>Description</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="My Idea is...{\n}jFuthermore"
+                    placeholder="Title"
+                    onChangeText={(newText) => setIdeaTitle(newText)}
+                />
+                <Text style={styles.label}>Description</Text>
+                <TextInput
+                    style={[styles.input, { minHeight: 100 }]}
+                    placeholder="My Idea is ..."
                     multiline={true}
+                    onChangeText={(newText) => setIdeaDescription(newText)}
                 />
             </ScrollView>
             <Pressable style={styles.button} onPress={() => createIdea()}>

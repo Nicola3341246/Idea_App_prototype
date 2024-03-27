@@ -1,79 +1,49 @@
+import { useState, useEffect } from "react";
 import { StyleSheet, View, ScrollView, Pressable, Text } from "react-native";
+import { getRepositoriesByParentId, getIdeas } from "../../assets/store/storage";
 import IdeaComponent from "../global/ideaCompondent";
 import RepoComponent from "../global/repoComponent";
 
 export default function RepoViewer({ route, navigation }) {
+    const [ideaRepository, setIdeaRepository] = useState([]);
+    const [ideas, setIdeas] = useState([]);
+
     const { repo } = route.params;
     navigation.setOptions({
         title: repo.name,
     });
 
-    const mockIdeaRepository = [
-        {
-            id: 1,
-            parentRepositoryId: 0,
-            name: "Repository 1",
-        },
-        {
-            id: 2,
-            parentRepositoryId: 0,
-            name: "Repository 2",
-        },
-        {
-            id: 3,
-            parentRepositoryId: 1,
-            name: "Repository 3",
-        },
-    ];
+    const loadData = async () => {
+        const repositories = await getRepositoriesByParentId(repo.id);
+        setIdeaRepository(repositories);
 
-    const mockIdeas = [
-        {
-            id: 1,
-            repositoryId: 1,
-            title: "Idea 1",
-        },
-        {
-            id: 2,
-            repositoryId: 1,
-            title: "Idea 2",
-        },
-        {
-            id: 3,
-            repositoryId: 2,
-            title: "Idea 3",
-        },
-        {
-            id: 4,
-            repositoryId: 2,
-            title: "Idea 4",
-        },
-        {
-            id: 5,
-            repositoryId: 0,
-            title: "Idea 5",
-        },
-        {
-            id: 6,
-            repositoryId: 0,
-            title: "Idea 6",
-        },
-    ];
+        const loadedIdeas = await getIdeas();
+        setIdeas(loadedIdeas);
+    };
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener("focus", () => {
+            loadData();
+        });
+
+        return unsubscribe;
+    }, [navigation]);
 
     const openIdeaKreator = () => {
-        navigation.navigate("IdeaKreator");
+        navigation.navigate("IdeaKreator", { repoId: repo.id });
     };
 
     return (
         <View style={styles.container}>
             <ScrollView>
-                {mockIdeaRepository.map((childrepo, index) => {
+                {ideaRepository.map((childrepo, index) => {
                     if (childrepo.parentRepositoryId === repo.id) {
                         return (
                             <RepoComponent navigation={navigation} repo={childrepo} key={index} />
                         );
                     }
                 })}
-                {mockIdeas.map((idea, index) => {
+                {ideas.map((idea, index) => {
                     if (idea.repositoryId === repo.id) {
                         return <IdeaComponent navigation={navigation} idea={idea} key={index} />;
                     }
